@@ -113,20 +113,40 @@ func collapse_step(elapsed: float) -> void:
 
 
 func _try_place(grid_position: Vector2i) -> void:
-	if not _can_place(grid_position):
+	if not _can_place_item(grid_position, selected_index):
 		return
-	build_points -= item_costs[selected_index]
-	if selected_index == 0:
+	if multiplayer.has_multiplayer_peer():
+		_place_item_rpc.rpc(grid_position, selected_index)
+	else:
+		_place_item(grid_position, selected_index)
+
+
+@rpc("any_peer", "call_local", "reliable")
+func _place_item_rpc(grid_position: Vector2i, item_index: int) -> void:
+	if not _can_place_item(grid_position, item_index):
+		return
+	_place_item(grid_position, item_index)
+
+
+func _place_item(grid_position: Vector2i, item_index: int) -> void:
+	build_points -= item_costs[item_index]
+	if item_index == 0:
 		_create_platform(grid_position)
 	else:
 		var scenes := [null, spike_scene, saw_scene, bounce_scene, falling_scene]
-		placed[grid_position] = {"node": null, "item": selected_index, "mutable": true}
-		trap_requested.emit(scenes[selected_index], grid_position, selected_index)
+		placed[grid_position] = {"node": null, "item": item_index, "mutable": true}
+		trap_requested.emit(scenes[item_index], grid_position, item_index)
 	build_changed.emit()
 
 
 func _can_place(grid_position: Vector2i) -> bool:
-	if build_points < item_costs[selected_index]:
+	return _can_place_item(grid_position, selected_index)
+
+
+func _can_place_item(grid_position: Vector2i, item_index: int) -> bool:
+	if item_index < 0 or item_index >= item_costs.size():
+		return false
+	if build_points < item_costs[item_index]:
 		return false
 	if placed.has(grid_position):
 		return false

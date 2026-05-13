@@ -28,6 +28,7 @@ var raid_elapsed := 0.0
 var proof_elapsed := 0.0
 var shake_time := 0.0
 var shake_strength := 0.0
+var _applying_remote_phase := false
 
 @onready var build_grid := $World/BuildGrid
 @onready var traps := $World/Traps
@@ -120,6 +121,7 @@ func _start_build_phase(load_builder_layout := true) -> void:
 	hud.show_turn_banner(current_builder)
 	_update_scoreboard()
 	hud.show_feedback("PLAYER %d BUILDS: place traps, then start proof" % current_builder)
+	_broadcast_phase_state(load_builder_layout)
 
 
 func _start_proof_phase() -> void:
@@ -132,6 +134,7 @@ func _start_proof_phase() -> void:
 	_remove_ghost()
 	recorder.start_recording()
 	hud.show_feedback("PLAYER %d PROOF: reach TREASURE twice" % current_builder)
+	_broadcast_phase_state(false)
 
 
 func _start_raid_phase() -> void:
@@ -144,6 +147,7 @@ func _start_raid_phase() -> void:
 	_spawn_runner(false)
 	_remove_ghost()
 	hud.show_feedback("PLAYER %d RAID: steal TREASURE before time runs out" % current_raider)
+	_broadcast_phase_state(false)
 
 
 func _start_solution_replay() -> void:
@@ -156,6 +160,7 @@ func _start_solution_replay() -> void:
 	_record_run("P%d defense timeout vs P%d: deaths %d, +%d" % [current_builder, current_raider, raid_deaths, points])
 	_shake(0.18, 5.0)
 	hud.show_feedback("TIME UP: creator ghost shows the proven route")
+	_broadcast_phase_state(false)
 
 
 func _start_collapse() -> void:
@@ -165,6 +170,37 @@ func _start_collapse() -> void:
 	hud.show_feedback("DUNGEON COLLAPSE")
 	if is_instance_valid(player):
 		player.kill()
+	_broadcast_phase_state(false)
+
+
+func _broadcast_phase_state(load_builder_layout: bool) -> void:
+	if _applying_remote_phase:
+		return
+	if not multiplayer.has_multiplayer_peer() or not multiplayer.is_server():
+		return
+	_sync_phase.rpc(phase, current_builder, current_raider, builder_round, player_scores[1], player_scores[2], load_builder_layout)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _sync_phase(new_phase: int, builder: int, raider: int, round_index: int, p1_score: int, p2_score: int, load_builder_layout: bool) -> void:
+	_applying_remote_phase = true
+	current_builder = builder
+	current_raider = raider
+	builder_round = round_index
+	player_scores[1] = p1_score
+	player_scores[2] = p2_score
+	match new_phase:
+		Phase.BUILD:
+			_start_build_phase(load_builder_layout)
+		Phase.PROOF:
+			_start_proof_phase()
+		Phase.RAID:
+			_start_raid_phase()
+		Phase.SOLUTION:
+			_start_solution_replay()
+		Phase.COLLAPSE:
+			_start_collapse()
+	_applying_remote_phase = false
 
 
 func _spawn_runner(record_run: bool) -> void:
