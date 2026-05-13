@@ -1,0 +1,202 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://UI/HUD.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/UI/panel_left.png" id="2"]
+[ext_resource type="Texture2D" path="res://Assets/UI/panel_right.png" id="3"]
+[ext_resource type="Texture2D" path="res://Assets/UI/panel_banner.png" id="4"]
+[ext_resource type="Texture2D" path="res://Assets/UI/panel_scoreboard.png" id="5"]
+[ext_resource type="Texture2D" path="res://Assets/UI/panel_base.png" id="6"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="TimerPlate" type="TextureRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -135.0
+offset_top = 8.0
+offset_right = 135.0
+offset_bottom = 82.0
+texture = ExtResource("6")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Timer" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -110.0
+offset_top = 18.0
+offset_right = 110.0
+offset_bottom = 70.0
+theme_override_font_sizes/font_size = 40
+text = "120"
+horizontal_alignment = 1
+modulate = Color(1, 0.92, 0.72, 1)
+
+[node name="LeftPanelArt" type="TextureRect" parent="Root"]
+layout_mode = 1
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 336.0
+offset_bottom = 208.0
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LeftPanel" type="Label" parent="Root"]
+layout_mode = 1
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 318.0
+offset_bottom = 190.0
+theme_override_font_sizes/font_size = 18
+text = "TRAPS"
+modulate = Color(0.72, 0.95, 1, 1)
+
+[node name="BuildPreview" type="Label" parent="Root"]
+layout_mode = 1
+offset_left = 28.0
+offset_top = 142.0
+offset_right = 132.0
+offset_bottom = 196.0
+theme_override_font_sizes/font_size = 34
+text = "■"
+horizontal_alignment = 1
+vertical_alignment = 1
+modulate = Color(0.22, 1, 0.56, 1)
+
+[node name="RightPanelArt" type="TextureRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 102.0
+texture = ExtResource("3")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RightPanel" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -250.0
+offset_top = 18.0
+offset_right = -18.0
+offset_bottom = 86.0
+theme_override_font_sizes/font_size = 18
+text = "SCORE"
+horizontal_alignment = 2
+modulate = Color(1, 0.84, 0.42, 1)
+
+[node name="TurnBannerArt" type="TextureRect" parent="Root"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -360.0
+offset_top = -78.0
+offset_right = 360.0
+offset_bottom = 78.0
+texture = ExtResource("4")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TurnBanner" type="Label" parent="Root"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -330.0
+offset_top = -62.0
+offset_right = 330.0
+offset_bottom = 62.0
+theme_override_font_sizes/font_size = 40
+text = "PLAYER 1 DEFENDS"
+horizontal_alignment = 1
+vertical_alignment = 1
+modulate = Color(1, 0.86, 0.28, 1)
+
+[node name="Scoreboard" type="Panel" parent="Root"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -430.0
+offset_top = -250.0
+offset_right = 430.0
+offset_bottom = 250.0
+
+[node name="ScoreboardArt" type="TextureRect" parent="Root/Scoreboard"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("5")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ScoreboardText" type="Label" parent="Root/Scoreboard"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 22.0
+offset_top = 18.0
+offset_right = -22.0
+offset_bottom = -18.0
+theme_override_font_sizes/font_size = 18
+text = "SCOREBOARD"
+
+[node name="FeedbackArt" type="TextureRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -390.0
+offset_top = -86.0
+offset_right = 390.0
+offset_bottom = -14.0
+texture = ExtResource("6")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Feedback" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -360.0
+offset_top = -74.0
+offset_right = 360.0
+offset_bottom = -24.0
+theme_override_font_sizes/font_size = 20
+text = "Ready"
+horizontal_alignment = 1
+modulate = Color(1, 1, 1, 1)

@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://Traps/FallingBlock.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/Traps/falling_block_64.png" id="2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_block"]
+size = Vector2(32, 32)
+
+[node name="FallingBlock" type="RigidBody2D"]
+collision_layer = 5
+collision_mask = 3
+freeze = true
+script = ExtResource("1")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_block")
+
+[node name="Visual" type="Sprite2D" parent="."]
+texture_filter = 0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2")
+
+[node name="Trigger" type="Area2D" parent="."]
+position = Vector2(0, 42)
+collision_layer = 0
+collision_mask = 2
+
+[node name="TriggerShape" type="CollisionShape2D" parent="Trigger"]
+shape = SubResource("RectangleShape2D_block")

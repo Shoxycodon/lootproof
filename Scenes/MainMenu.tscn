@@ -1,0 +1,142 @@
+[gd_scene load_steps=6 format=3 uid="uid://by7asy0b40dr7"]
+
+[ext_resource type="Script" uid="uid://c8ny7i0nade28" path="res://Scenes/MainMenu.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://c00uml1gkqdfs" path="res://Assets/Background/bg_far.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://iyxb84samb0u" path="res://Assets/UI/panel_base.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://8rntm5utyxb0" path="res://Assets/UI/button_base.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://u3fylebi30q7" path="res://Assets/Player/rogue_character_128.png" id="5"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Backdrop" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Vignette" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.04, 0.075, 0.45)
+
+[node name="TitlePanel" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -360.0
+offset_top = 106.0
+offset_right = 360.0
+offset_bottom = 282.0
+grow_horizontal = 2
+texture = ExtResource("3")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CharacterPreview" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -70.0
+offset_top = 46.0
+offset_right = 58.0
+offset_bottom = 174.0
+grow_horizontal = 2
+texture = ExtResource("5")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="."]
+modulate = Color(1, 0.86, 0.42, 1)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -225.0
+offset_top = 147.0
+offset_right = 227.0
+offset_bottom = 235.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 64
+text = "LootProof"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="."]
+modulate = Color(0.95, 0.86, 0.72, 1)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -359.0
+offset_top = 227.0
+offset_right = 361.0
+offset_bottom = 273.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 22
+text = "Build. Prove. Raid. Collapse."
+horizontal_alignment = 1
+
+[node name="ButtonArt" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -140.0
+offset_top = 336.0
+offset_right = 140.0
+offset_bottom = 408.0
+grow_horizontal = 2
+texture = ExtResource("4")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="StartButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -140.0
+offset_top = 336.0
+offset_right = 140.0
+offset_bottom = 408.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 24
+text = "Start Prototype"
+flat = true
+
+[node name="Footer" type="Label" parent="."]
+modulate = Color(0.78, 0.68, 0.55, 1)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -330.0
+offset_top = -72.0
+offset_right = 330.0
+offset_bottom = -28.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 18
+text = "cute dungeon noir prototype"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
