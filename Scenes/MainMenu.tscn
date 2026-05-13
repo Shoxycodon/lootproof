@@ -121,7 +121,7 @@ theme_override_font_sizes/font_size = 24
 text = "Local Game"
 flat = true
 
-[node name="HostButton" type="Button" parent="."]
+[node name="MultiplayerButton" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -132,49 +132,7 @@ offset_right = 140.0
 offset_bottom = 436.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 22
-text = "Host Game"
-
-[node name="AddressInput" type="LineEdit" parent="."]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -140.0
-offset_top = 448.0
-offset_right = 140.0
-offset_bottom = 492.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 18
-placeholder_text = "127.0.0.1"
-text = "127.0.0.1"
-
-[node name="JoinButton" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -140.0
-offset_top = 504.0
-offset_right = 140.0
-offset_bottom = 556.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 22
-text = "Join Game"
-
-[node name="StatusLabel" type="Label" parent="."]
-modulate = Color(0.95, 0.86, 0.72, 1)
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -330.0
-offset_top = 568.0
-offset_right = 330.0
-offset_bottom = 612.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 18
-text = "Host or join a 2-player test session"
-horizontal_alignment = 1
+text = "Multiplayer"
 
 [node name="Footer" type="Label" parent="."]
 modulate = Color(0.78, 0.68, 0.55, 1)
@@ -195,5 +153,4 @@ text = "cute dungeon noir prototype"
 horizontal_alignment = 1
 
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="HostButton" to="." method="_on_host_button_pressed"]
-[connection signal="pressed" from="JoinButton" to="." method="_on_join_button_pressed"]
+[connection signal="pressed" from="MultiplayerButton" to="." method="_on_multiplayer_button_pressed"]

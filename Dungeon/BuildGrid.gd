@@ -16,6 +16,7 @@ signal trap_requested(scene: PackedScene, grid_position: Vector2i, item_index: i
 @export var falling_scene: PackedScene = preload("res://Traps/FallingBlock.tscn")
 @export var platform_texture: Texture2D = preload("res://Assets/Tiles/tile_stone_32.png")
 @export var default_platform_texture: Texture2D = preload("res://Assets/Tiles/tile_stone_dark_32.png")
+@export var network_shared_build := false
 
 var build_mode := true
 var selected_index := 0
@@ -115,7 +116,7 @@ func collapse_step(elapsed: float) -> void:
 func _try_place(grid_position: Vector2i) -> void:
 	if not _can_place_item(grid_position, selected_index):
 		return
-	if multiplayer.has_multiplayer_peer():
+	if network_shared_build and multiplayer.has_multiplayer_peer():
 		_place_item_rpc.rpc(grid_position, selected_index)
 	else:
 		_place_item(grid_position, selected_index)

@@ -1,0 +1,110 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://Scenes/MultiplayerDungeonScene.gd" id="1"]
+[ext_resource type="PackedScene" path="res://Player/Player.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://UI/HUD.tscn" id="3"]
+[ext_resource type="Script" path="res://Dungeon/BuildGrid.gd" id="4"]
+[ext_resource type="Script" path="res://Dungeon/DungeonValidator.gd" id="5"]
+[ext_resource type="Texture2D" path="res://Assets/Background/bg_far.png" id="6"]
+[ext_resource type="Texture2D" path="res://Assets/Background/bg_mid.png" id="7"]
+[ext_resource type="Texture2D" path="res://Assets/Goal/treasure_chest_96.png" id="8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_goal"]
+size = Vector2(42, 80)
+
+[node name="MultiplayerDungeonScene" type="Node2D"]
+script = ExtResource("1")
+player_scene = ExtResource("2")
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="Background" type="ColorRect" parent="World"]
+offset_left = -2000.0
+offset_top = -900.0
+offset_right = 2600.0
+offset_bottom = 1200.0
+color = Color(0.047, 0.062, 0.087, 1)
+
+[node name="FarParallax" type="Sprite2D" parent="World"]
+position = Vector2(600, 210)
+z_index = -10
+texture_filter = 0
+texture = ExtResource("6")
+
+[node name="MidParallax" type="Sprite2D" parent="World"]
+position = Vector2(600, 286)
+z_index = -9
+texture_filter = 0
+texture = ExtResource("7")
+
+[node name="BackGlow" type="ColorRect" parent="World"]
+offset_left = -160.0
+offset_top = 224.0
+offset_right = 1344.0
+offset_bottom = 560.0
+color = Color(0.09, 0.15, 0.2, 1)
+
+[node name="SpawnLabel" type="Label" parent="World"]
+offset_left = 34.0
+offset_top = 366.0
+offset_right = 180.0
+offset_bottom = 397.0
+theme_override_font_sizes/font_size = 18
+text = "START"
+horizontal_alignment = 1
+
+[node name="BuildGrid" type="Node2D" parent="World"]
+script = ExtResource("4")
+
+[node name="Traps" type="Node2D" parent="World"]
+
+[node name="Goal" type="Area2D" parent="World"]
+position = Vector2(1056, 448)
+collision_mask = 2
+
+[node name="GoalShape" type="CollisionShape2D" parent="World/Goal"]
+shape = SubResource("RectangleShape2D_goal")
+
+[node name="TreasureGlow" type="Polygon2D" parent="World/Goal"]
+polygon = PackedVector2Array(0, -78, 28, -52, 48, -8, 35, 42, 0, 68, -35, 42, -48, -8, -28, -52)
+color = Color(1, 0.78, 0.16, 0.28)
+
+[node name="TreasureChest" type="Sprite2D" parent="World/Goal"]
+position = Vector2(0, 14)
+texture_filter = 0
+scale = Vector2(0.72, 0.72)
+texture = ExtResource("8")
+
+[node name="GoalFlag" type="Polygon2D" parent="World/Goal"]
+position = Vector2(36, -8)
+polygon = PackedVector2Array(-8, 20, -8, -62, 34, -46, -8, -28)
+color = Color(0.1, 0.95, 0.68, 1)
+
+[node name="TreasureLabel" type="Label" parent="World/Goal"]
+offset_left = -74.0
+offset_top = -116.0
+offset_right = 74.0
+offset_bottom = -82.0
+theme_override_font_sizes/font_size = 20
+text = "TREASURE"
+horizontal_alignment = 1
+
+[node name="SpawnPoint" type="Marker2D" parent="World"]
+position = Vector2(96, 448)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(640, 360)
+enabled = true
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
+limit_left = -160
+limit_top = -220
+limit_right = 1400
+limit_bottom = 760
+
+[node name="DungeonValidator" type="Node" parent="."]
+script = ExtResource("5")
+
+[node name="HUD" parent="." instance=ExtResource("3")]
+
+[connection signal="body_entered" from="World/Goal" to="." method="_on_goal_body_entered"]
