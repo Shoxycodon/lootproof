@@ -4,7 +4,7 @@ enum Phase { BUILD, PROOF, WAITING, RAID, RESULTS }
 
 @export var player_scene: PackedScene
 @export var run_time_limit := 120.0
-@export var proof_clears_required := 2
+@export var proof_clears_required := 1
 
 var phase := Phase.BUILD
 var time_left := 120.0
@@ -83,7 +83,7 @@ func _start_build_phase(reset_proof := true) -> void:
 	if reset_proof:
 		proof_clears = 0
 		validator.reset_proof()
-	hud.show_feedback("P%d BUILD: create the dungeon P%d must raid" % [my_player_id, opponent_player_id])
+	hud.show_feedback("P%d BUILD: build your dungeon, then press B to proof it" % my_player_id)
 
 
 func _start_proof_phase() -> void:
@@ -100,7 +100,7 @@ func _start_waiting_phase() -> void:
 	time_left = 0.0
 	_remove_runner()
 	build_grid.set_build_mode(false)
-	hud.show_feedback("Dungeon proven. Waiting for P%d..." % opponent_player_id)
+	hud.show_feedback("Your dungeon is proven. Waiting for P%d to finish proofing..." % opponent_player_id)
 
 
 func _start_raid_phase() -> void:
@@ -147,8 +147,20 @@ func _submit_proven_dungeon_rpc(snapshot: Dictionary) -> void:
 
 func _receive_proven_dungeon(player_id: int, snapshot: Dictionary) -> void:
 	submitted_dungeons[player_id] = snapshot
+	if multiplayer.is_server():
+		if player_id == my_player_id:
+			_opponent_ready_rpc.rpc_id(2, player_id)
+		else:
+			hud.show_feedback("P%d is ready. Finish proofing your dungeon." % player_id)
 	if submitted_dungeons.has(1) and submitted_dungeons.has(2):
 		_begin_raid_for_all()
+
+
+@rpc("authority", "call_remote", "reliable")
+func _opponent_ready_rpc(player_id: int) -> void:
+	if phase == Phase.WAITING:
+		return
+	hud.show_feedback("P%d is ready. Finish proofing your dungeon." % player_id)
 
 
 func _begin_raid_for_all() -> void:
@@ -164,6 +176,7 @@ func _begin_raid_with_snapshot_rpc(snapshot: Dictionary) -> void:
 
 
 func _begin_raid_with_snapshot(snapshot: Dictionary) -> void:
+	submitted_dungeons.clear()
 	build_grid.restore_user_build(snapshot)
 	_start_raid_phase()
 
